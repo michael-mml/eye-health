@@ -1,0 +1,29 @@
+<!-- The popup's DOM is reloaded with the contents of this HTML when the popup is opened -->
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+
+    <body>
+        <div class="controls">
+            <!-- TODO: save state to storage? -->
+            <button id="extension-control"></button>
+            <span id="timer"></span>
+            <div class="duration">
+                <span id="duration-display"></span>
+                <input type="range" name="duration" id="duration-control" min="1" max="60" value="20">
+            </div>
+        </div>
+    </body>
+
+    <!-- entrypoint -->
+    <script type="module" src="popup.js"></script>
+    <!-- model script -->
+    <script type="module" src="../model/model.js"></script>
+
+</html>

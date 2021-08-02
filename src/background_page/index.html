@@ -1,0 +1,16 @@
+<!-- This background page enables ES6 modules for background scripts by specifying type="module" -->
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <!-- entrypoint -->
+        <!-- runs as soon as the extension is installed -->
+        <script type="module" src="index.js"></script>
+        <!-- model script -->
+        <script type="module" src="../model/model.js"></script>
+        <!-- audio script -->
+        <script type="module" src="audio/audioOrchestrator.js"></script>
+    </head>
+
+</html>
