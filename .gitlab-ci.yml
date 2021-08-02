@@ -1,0 +1,34 @@
+# From: https://classic.yarnpkg.com/en/docs/install-ci/
+
+default:
+  # Node Docker image comes with yarn pre-installed
+  image: node:14
+
+# cache .yarn folder for faster builds
+cache:
+  paths:
+    - .yarn
+
+# before starting any stage, make sure we fetch all dependencies
+before_script:
+  - yarn install --cache-folder .yarn
+
+stages:          # List of stages for jobs, and their order of execution
+  - test
+
+unit-test-job:   # This job runs in the test stage.
+  stage: test    # It only starts when the job in the build stage completes successfully.
+  cache:
+    paths:
+      - node_modules/
+      - .yarn
+  script:
+    - echo "Running unit tests..."
+    - yarn run test:es6
+
+lint-test-job:   # This job also runs in the test stage.
+  stage: test    # It can run at the same time as unit-test-job (in parallel).
+  script:
+    - echo "Linting code... This will take about 10 seconds."
+    - yarn run lint
+    - echo "No lint issues found."
