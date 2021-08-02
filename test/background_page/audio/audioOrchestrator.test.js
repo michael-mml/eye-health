@@ -3,8 +3,8 @@ import {
   it,
   jest,
 } from '@jest/globals';
-import AudioOrchestrator from '../../src/background_page/audio/audioOrchestrator.js';
-import AudioPlayer from '../../src/background_page/audio/audioPlayer.js';
+import AudioOrchestrator from '../../../src/background_page/audio/audioOrchestrator.js';
+import AudioPlayer from '../../../src/background_page/audio/audioPlayer.js';
 
 const SECONDS_IN_MIN = 60;
 const MILLISECONDS_IN_SECOND = 1000;
