@@ -31,3 +31,5 @@ Jest is used for unit testing. Due to Jest's [experimental ES6 module support](h
 4. `type` is set to ES6 module in `package.json`
 
 5. `@jest/globals` is added as a `devDependency` to access the `jest` object in tests
+
+Since [`jsdom` does not support `HTMLMediaElement` APIs](https://github.com/jsdom/jsdom/issues/2155), they have been polyfilled in `jest.config.js` (see `setupFilesAfterEnv`).
