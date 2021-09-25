@@ -5,10 +5,6 @@
  * This class is responsible for playing audio files at specified intervals.
  */
 export default class AudioPlayer {
-  _audioFileUrl;
-
-  _notifySound;
-
   /**
    * Do not use, the static factory method is recommended instead.
    * Creates a new audio object for playback.
@@ -60,7 +56,7 @@ export default class AudioPlayer {
    *
    * @returns {Promise<Event>} A Promise that resolves with the `canplaythrough` event
    */
-  async restart() {
+  restart() {
     this._notifySound = new Audio(this._audioFileUrl);
     return new Promise((resolve) => {
       this._notifySound.addEventListener(
@@ -75,13 +71,13 @@ export default class AudioPlayer {
   /**
    * Returns an async function that when invoked, plays the audio file, if it is ready to be played.
    */
-  playAudio = async () => {
+  async playAudio() {
     try {
       await this._notifySound.play();
     } catch (err) {
       console.error('An error occured', err);
     }
-  };
+  }
 
   /**
    * Returns if the audio file is ready for playback.

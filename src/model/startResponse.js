@@ -1,6 +1,8 @@
 export default class StartResponse {
-  soundIntervalId;
-
+  /**
+   *
+   * @param {number} soundIntervalId the id returned by setInterval
+   */
   constructor(soundIntervalId) {
     this.soundIntervalId = soundIntervalId;
   }

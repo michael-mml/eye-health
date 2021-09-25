@@ -2,20 +2,15 @@
 /* eslint-disable no-underscore-dangle */
 import AudioPlayer from './audioPlayer.js';
 
+// TODO: refactor these constants as class members once web-ext lint stops throwing errors
+const _SECONDS_IN_MIN = 60;
+const _MILLISECONDS_IN_SECOND = 1000;
+const _DEFAULT_NOTIFY_DURATION_IN_MINS = 20;
+
 /**
  * This class is responsible for managing the time intervals of playing audio files.
  */
 export default class AudioOrchestrator {
-  _SECONDS_IN_MIN = 60;
-
-  _MILLISECONDS_IN_SECOND = 1000;
-
-  notifyDurationInMinutes = 20;
-
-  _audioPlayer;
-
-  intervalId;
-
   /**
    * Do not use, the static factory method is recommended instead.
    * Creates an instance of an AudioOrchestrator.
@@ -27,6 +22,7 @@ export default class AudioOrchestrator {
       throw new Error('Audio player is not ready for playback, did you use the static factory method?');
     }
     this._audioPlayer = audioPlayer;
+    this._notifyDurationInMinutes = _DEFAULT_NOTIFY_DURATION_IN_MINS;
   }
 
   /**
@@ -39,23 +35,24 @@ export default class AudioOrchestrator {
   static async withSound(audioFileUrl) {
     // static factory method to asynchronously instantiate ready-to-play audio files
     this._audioPlayer = await AudioPlayer.withSoundReady(audioFileUrl);
+    this._notifyDurationInMinutes = _DEFAULT_NOTIFY_DURATION_IN_MINS;
     // pass the ready-to-be used audio player to the constructor
     return new this(this._audioPlayer);
   }
 
   get notifyDurationInMinutes() {
-    return this.notifyDurationInMinutes;
+    return this._notifyDurationInMinutes;
   }
 
-  set notifyDurationInMinutes(notifyDurationInMinutes) {
-    if (notifyDurationInMinutes < 0) {
+  set notifyDurationInMinutes(duration = _DEFAULT_NOTIFY_DURATION_IN_MINS) {
+    if (duration < 0) {
       throw new Error('Invalid duration, please set a duration greater or equal to 0');
     }
-    this.notifyDurationInMinutes = notifyDurationInMinutes;
+    this._notifyDurationInMinutes = duration;
   }
 
   get intervalId() {
-    return this.intervalId;
+    return this._intervalId;
   }
 
   /**
@@ -67,16 +64,16 @@ export default class AudioOrchestrator {
   playSoundEveryInterval() {
     return new Promise((resolve, reject) => {
       if (this._audioPlayer.isReady) {
-        this.intervalId = setInterval(
+        this._intervalId = setInterval(
           async () => {
             // decorates play method with logging
             await this._audioPlayer.playAudio();
             console.info(`Triggered at ${new Date().toISOString()}`);
             const currentTimestamp = new Date().getTime();
             const nextNotifyTimestamp = currentTimestamp
-              + this.notifyDurationInMinutes
-              * this._SECONDS_IN_MIN
-              * this._MILLISECONDS_IN_SECOND;
+              + this._notifyDurationInMinutes
+              * _SECONDS_IN_MIN
+              * _MILLISECONDS_IN_SECOND;
             // TODO: send next notify timestamp to popup
             console.info(`Next trigger at ${new Date(nextNotifyTimestamp).toISOString()}`);
 
@@ -85,12 +82,12 @@ export default class AudioOrchestrator {
             // playback in the next interval
             await this._audioPlayer.restart();
           },
-          this.notifyDurationInMinutes
-          * this._SECONDS_IN_MIN
-          * this._MILLISECONDS_IN_SECOND,
+          this._notifyDurationInMinutes
+          * _SECONDS_IN_MIN
+          * _MILLISECONDS_IN_SECOND,
         );
-        console.log(this.intervalId);
-        resolve(this.intervalId);
+        console.log(this._intervalId);
+        resolve(this._intervalId);
       } else {
         reject(new Error('Audio is not ready'));
       }
@@ -101,7 +98,7 @@ export default class AudioOrchestrator {
    * Stops playing the sound at each interval.
    */
   stopSoundInterval() {
-    clearInterval(this.intervalId);
-    this.intervalId = null;
+    clearInterval(this._intervalId);
+    this._intervalId = null;
   }
 }
