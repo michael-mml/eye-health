@@ -2,8 +2,6 @@
     "error", { "props": true, "ignorePropertyModificationsFor": ["audioOrchestrator"] }
   ]
 */
-// below ESLint comment states the code relies on the browser global variable
-/* global browser */
 
 // this module is executed when the extension is installed and acts as the
 // backend/server of the extension

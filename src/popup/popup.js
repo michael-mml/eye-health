@@ -1,6 +1,3 @@
-// the below ESLint comment states the code relies on the browser global variable
-/* global browser */
-
 // this module is executed when the popup is visible (i.e. whenever the icon is
 // clicked) and acts as the frontend/client of the extension
 import status from '../model/model.js';
